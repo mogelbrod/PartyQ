@@ -17,7 +17,7 @@ Authors
 =======
 
 * Victor Hallberg <<victorha@kth.se>>
-* Simon Strömm <<simstr@kth.se>>
+* Simon Ström <<simstr@kth.se>>
 * Jacob Håkansson <<jacobhak@kth.se>>
 * Jennie Olsson <<jennieol@kth.se>>
 * Ludvig Jonsson <<ludjon@kth.se>>
