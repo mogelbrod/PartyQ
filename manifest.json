@@ -1,24 +1,30 @@
-// http://developer.spotify.com/technologies/apps/guidelines/developer/
 {
-  "BundleIdentifier": "partifaj",
+  "AppName": {
+    "en": "PartyQueue"
+  },
+  "AppDescription": {
+    "en": "Party queue utilizing twitter to let partygoers queue songs."
+  },
+  "AppIcon": {
+    "36x18": "tutorial.png"
+  },
+  "BundleIdentifier": "party",
   "BundleType": "Application",
   "BundleVersion": "0.1",
   "Dependencies": {
-    "api": "1.0.0",
-    "views": "1.0.0"
+    "api": "1.10.2",
+    "views": "1.18.1"
   },
-  "SupportedDeviceClasses": [ "Desktop" ],
-  "SupportedLanguages": [ "en" ],
+  "RequiredInterface": 1,
+  "RequiredPermissions": [
+    "http://api.twitter.com",
+    "http://search.twitter.com/"
+  ],
+  "SupportedLanguages": [
+    "en"
+  ],
   "VendorIdentifier": "org.fenixorden",
-
-  "AppName": { "en": "partifaj" },
-  "AppDescription": "",
-  "AppIcon": "",
-  "AppURL": "https://github.com/mogelbrod/partifaj",
-
-  "AcceptedLinkTypes": [],
-  "AcceptedViewDropTypes": [],
-  "BundleCopyright": "",
-  "DefaultTabs": [],
-  "RequiredPermissions": []
+  "AcceptedLinkTypes": [
+    "playlist"
+  ]
 }

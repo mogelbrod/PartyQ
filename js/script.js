@@ -30,7 +30,7 @@ function updateTrackDetails() {
   sp.trackPlayer.addEventListener('playerStateChanged', function (event) {
     // Only update the page if the track changed
     if (event.data.curtrack == true) {
-        updatePageWithTrackDetails();
+        updateTrackDetails();
     }
   });
 })();
