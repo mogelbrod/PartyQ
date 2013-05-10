@@ -1,16 +1,24 @@
+// http://developer.spotify.com/technologies/apps/guidelines/developer/
 {
+  "BundleIdentifier": "partifaj",
   "BundleType": "Application",
-  "AppIcon": {
-    "36x18": "tutorial.png"
+  "BundleVersion": "0.1",
+  "Dependencies": {
+    "api": "1.0.0",
+    "views": "1.0.0"
   },
-  "AppName": {
-    "en": "Boilerplate"
-  },
-  "AppURL": "http://www.spotify.com",
-  "SupportedLanguages": [
-    "en"
-  ],
-  "RequiredPermissions": [
-    "https://www.googleapis.com"
-  ]
+  "SupportedDeviceClasses": [ "Desktop" ],
+  "SupportedLanguages": [ "en" ],
+  "VendorIdentifier": "org.fenixorden",
+
+  "AppName": { "en": "partifaj" },
+  "AppDescription": "",
+  "AppIcon": "",
+  "AppURL": "https://github.com/mogelbrod/partifaj",
+
+  "AcceptedLinkTypes": [],
+  "AcceptedViewDropTypes": [],
+  "BundleCopyright": "",
+  "DefaultTabs": [],
+  "RequiredPermissions": []
 }
