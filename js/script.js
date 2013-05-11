@@ -16,6 +16,10 @@ require([
     })
   });
 
+  function parseURL(url) {
+    return "spotify:track:" + url.split("/").pop();
+  }
+
   priorityQueue = function () {
     var queue = new Array();
     var requestCallbacks = new Array();
