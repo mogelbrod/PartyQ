@@ -7,6 +7,14 @@
   <link rel="stylesheet" href="sp://import/css/api.css">
   <link rel="stylesheet" href="sp://import/css/shared.css">
   <link rel="stylesheet" href="css/master.css">
+  <script type="text/javascript" src="js/sha1.js"></script>
+  <script type="text/javascript" src="js/oauth.js"></script>
+  <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="js/twitter.js"></script>
+
+  <script type="text/javascript">
+  $("document").on("ready", jodeli());
+  </script>
 </head>
 <body onload="sp = getSpotifyApi(1); sp.require('js/script');">
   <h1>PartyQueue</h1>
