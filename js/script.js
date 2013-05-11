@@ -8,10 +8,6 @@ require([
     '$views/image#Image'
     ], function(models, Location, Search, Toplist, buttons, List, Image) {
 
-      console.log("do some parsing");
-      parseURL("http://spoti.fi/Jn1muJ");
-      parseURL("http://open.spotify.com/track/0VnMmNfuTwlhJaxWIRwtb0");
-
       function parseURL(url) {
         uri = "";
         if (url.substring(0,15) == "http://spoti.fi" ) {//poti.fi") {
@@ -50,6 +46,11 @@ require([
             playCallbacks.push(callbackFunction);
           },
 
+          clear: function() {
+            queue = [];
+            playCallback(null);
+          },
+
 
           requestCallback: function(track, requests, requesters) {
             for (var i = 0; i < requestCallbacks.length; i++) {
@@ -74,6 +75,8 @@ require([
           },
 
           request: function(uri, requestData) {
+            if (uri == null || uri == "")
+              return;
             models.Track.fromURI(uri).load('name').done(function(track) {
               console.log(track.uri + ': ' + track.name.decodeForText());
 
@@ -103,8 +106,6 @@ require([
           },
 
           pop: function(uri) {
-            console.log("pop called: " + uri);
-
             if (queue.length == 0) {
               return null;
             }
@@ -156,6 +157,7 @@ require([
       };//}}}
 
       var queue = priorityQueue();
+      var twitter = twitterConnection('#ssh', queue.handleTwitterObject);
 
       //{{{ UI
       $(function() {
@@ -187,7 +189,7 @@ require([
 
       function redraw() {
         $emptyRow.hide();
-        $rows.children().remove();
+        $rows.children().remove(':not(.empty)');
 
         var all = queue.all();
         for (var i = 0; i < all.length; i++) {
@@ -277,6 +279,10 @@ require([
         return false;
       });//}}}
 
+      $('#save').click(function() {
+        twitter = twitterConnection($('#tag').val(), queue.handleTwitterObject);
+      })
+
       queue.onRequest(onRequest);
       queue.onPlay(onPlay);
 
@@ -331,7 +337,6 @@ require([
       }
 
       queue.printQueue();
-      twitterConnection('#funqueue', queue.handleTwitterObject);
 
       //{{{ Playlist / queue handling
       // Triggers changeTrack() when track is changed. Logic!
@@ -339,7 +344,7 @@ require([
 
       // Called when track is changed.
       function changeEventHandler() {
-        console.log("changeEventHandler");
+        console.log("change:track event handler called");
         playTrack(queue.pop());
       }
 
@@ -349,7 +354,7 @@ require([
         } else {
           console.log("playTrack: next up: " + req.track.uri);
           req.track.load('name','uri').done(function(track) {
-            console.log("changing song now: " + track.uri);
+            console.log("changing song now: " + track.name.decodeForText());
             models.player.removeEventListener('change:track', changeEventHandler);
             models.player.playTrack(track);
             setTimeout(function() {
