@@ -16,20 +16,22 @@ require([
     })
   });
 
-  parseURL("spoti.fy/Jn1muJ");
+  console.log("do some parsing");
+  parseURL("spoti.fi/Jn1muJ");
   parseURL("http://open.spotify.com/track/0VnMmNfuTwlhJaxWIRwtb0");
 
   function parseURL(url) {
     uri = "";
-    if (url.match("spoti.fi/^")) {
+    if (url.substring(0,8) == "spoti.fi" ) {//poti.fi") {
       console.log("its .fi");
       //is link of type: spoti.fy/Jn1muJ
+      // We do not handle short urls.
+      return null;
     } else {
       // Normal
       console.log("Normal");
       return "spotify:track:" + url.split("/").pop();
     }
-    return uri;
   }
 
   priorityQueue = function () {//{{{
