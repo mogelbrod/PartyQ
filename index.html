@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="sp://import/css/shared.css">
   
   <link rel="stylesheet" href="css/master.css">
+  <script type="text/javascript" src="js/sha1.js"></script>
+  <script type="text/javascript" src="js/oauth.js"></script>
+  <script type="text/javascript" src="js/twitter.js"></script>
   <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
   <script type="text/javascript" src="js/handlebars.js"></script>
   <script type="text/javascript" src="js/script.js"></script>
@@ -23,21 +26,26 @@
   <table class="list" id="list">
     <thead>
       <tr>
-        <th>Artist</th>
-        <th>Track</th>
-        <th>Requests</th>
-        <th>Requested by</th>
+        <th class="track">Track</th>
+        <th class="artist">Artist</th>
+        <th class="requests">Requests</th>
+        <th class="requesters">Requested by</th>
       </tr>
     </thead>
     <tbody>
+      <script type="text/javascript">
+        twitterConnection("#funqueue"); //2nd parameter should be a callback which receives an object.
+      </script>
       <script id="track-row-template" type="text/x-handlebars-template">
-        <tr id="{{id}}">
+        <tr id="{{id}}" data-uri="{{uri}}">
+          <td class="title">{{title}}</td>
           <td class="artists">{{#each artists}}
-            <span class="artist">{{name}}</span>
+            <a class="uri artist" href="{{uri}}">{{name}}</span>
           {{/each}}</td>
-          <td class="title"><a href="{{uri}}">{{title}}</a></td>
           <td class="requests">{{requests}}</td>
-          <td class="requested-by">{{requestedBy}}</td></tr>
+          <td class="requesters">{{#each requesters}}
+            <span class="requester">{{user}}</span>
+          {{/each}}</td>
         </tr>
       </script>
       <tr class="empty">
@@ -47,5 +55,9 @@
   </table>
 
   <input name="nextTrack" id="nextTrack" value="spotify:track:0YbUPI6SaiK2tLLPi8AqIv"></input>
+
+  <script type="text/javascript">
+    twitterConnection(); // Can take hashtag as parameter
+  </script>
 </body>
 </html>
