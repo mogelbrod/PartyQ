@@ -85,11 +85,10 @@ require([
       console.log("loaded a track");
       console.log(track);
       tmpPlaylist.tracks.add(track);
-    }); 
-
-    // set the playlist as playing now
-    models.player.playContext(tmpPlaylist);
-    console.log("context set");
+      // set the playlist as playing now
+      models.player.playContext(tmpPlaylist);
+      console.log("context set");
+    });
   }
   
   /*
