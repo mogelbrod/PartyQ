@@ -43,12 +43,12 @@ function twitterConnection(hashtag) {
     //Receiving stream
     console.log("Now receiveing Twitter stream");
     if (messageLen < xhr.responseText.length){
-      var li = $("<li>");
+      var actualLength = xhr.responseText.length - messageLen;
       var string = (messageLen +"-"+ xhr.responseText.length +":"+xhr.responseText.substring(messageLen,xhr.responseText.length));
-      var tweet = $.parseJSON(xhr.responseText.substring(messageLen,xhr.responseText.length));
-      console.log(tweet);
-      li.append(tweet.text);
-      $("#tweets").append(li);
+      if (actualLength > 2) {
+        var tweet = $.parseJSON(xhr.responseText.substring(messageLen,xhr.responseText.length));
+        buildQueueObject(tweet);
+      }
     }
     messageLen = xhr.responseText.length;
     }else if(xhr.readyState == 4) {
