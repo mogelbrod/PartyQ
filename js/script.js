@@ -8,26 +8,39 @@ require([
   '$views/image#Image'
   ], function(models, Location, Search, Toplist, buttons, List, Image) {
 
-  // Get the currently-playing track
-  //models.player.load('track').done(updateCurrentTrack);
-  // Update the DOM when the song changes
+  /* 
+   Triggers changeTrack() when track is changed. Logic!
+  */
   models.player.addEventListener('change:track', changeTrack);
 
+  /**
+   * called on change:track.
+   * should return the uri for next song, 
+   * if null the queue is used as normal
+   */
   function getNextSongURI() {
     uri = $("#nextTrack").val();
     return uri;
   }
 
+  /*
+    Fetches uri and plays that track, if uri is not null.
+  */
   function changeTrack() {
     console.log("ChangeTrack");
     uri = getNextSongURI();
 
-    console.log("Setting next song: " + uri);
-    track = models.Track.fromURI(uri).load('name').done(
-      function(track) {
-        displayTrack(track);
-        playSong(track);
-    });
+    if (uri == null) {
+      // No new song
+      console.log("Dont change song. Song is null");
+    } else {
+      console.log("Setting next song: " + uri);
+      track = models.Track.fromURI(uri).load('name').done(
+        function(track) {
+          displayTrack(track);
+          playSong(track);
+      });
+    }
 
     //updateCurrentTrack();
   }
