@@ -13,9 +13,22 @@ require([
   // Update the DOM when the song changes
   models.player.addEventListener('change:track', changeTrack);
 
+  function getNextSongURI() {
+    uri = $("#nextTrack").val();
+    return uri;
+  }
+
   function changeTrack() {
     console.log("ChangeTrack");
-    playNextSong();
+    uri = getNextSongURI();
+
+    console.log("Setting next song: " + uri);
+    track = models.Track.fromURI(uri).load('name').done(
+      function(track) {
+        displayTrack(track);
+        playSong(track);
+    });
+
     //updateCurrentTrack();
   }
 
@@ -23,15 +36,9 @@ require([
     console.log(track.name);
   }
 
-  function playNextSong() {
-    uri = $("#nextTrack").val();
-    console.log("Setting next song: " + uri);
-    track = models.Track.fromURI(uri).load('name').done(
-      function(track) {
-        displayTrack(track);
-        models.player.playTrack(track);  
-    });
-
+  function playSong(track) {
+    
+    models.player.playTrack(track); 
     //
   }
   /*
