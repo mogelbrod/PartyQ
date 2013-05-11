@@ -9,16 +9,44 @@
   <link rel="stylesheet" href="css/master.css">
   <script type="text/javascript" src="js/sha1.js"></script>
   <script type="text/javascript" src="js/oauth.js"></script>
-  <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
   <script type="text/javascript" src="js/twitter.js"></script>
-
-  <script type="text/javascript">
-  $("document").on("ready", jodeli());
-  </script>
+  <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+  <script type="text/javascript" src="js/handlebars.js"></script>
+  <script type="text/javascript" src="js/script.js"></script>
+  <script type="text/javascript" src="js/ui.js"></script>
 </head>
-<body onload="sp = getSpotifyApi(1); sp.require('js/script');">
+<body>
   <h1>PartyQueue</h1>
-  <p id="track-info">
-  </p>
+
+  <table class="list" id="list">
+    <thead>
+      <tr>
+        <th>Artist</th>
+        <th>Track</th>
+        <th>Requests</th>
+        <th>Requested by</th>
+      </tr>
+    </thead>
+    <tbody>
+      <script type="text/javascript">
+        
+      </script>
+      <script id="track-row-template" type="text/x-handlebars-template">
+        <tr id="{{id}}">
+          <td class="artists">{{#each artists}}
+            <span class="artist">{{name}}</span>
+          {{/each}}</td>
+          <td class="title">{{title}}</td>
+          <td class="requests">{{requests}}</td>
+          <td class="requested-by">{{requestedBy}}</td></tr>
+        </tr>
+      </script>
+      <tr class="empty">
+        <td colspan="4">No requests have arrived yet, stay tuned!</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <input name="nextTrack" id="nextTrack" value="spotify:track:0YbUPI6SaiK2tLLPi8AqIv"></input>
 </body>
 </html>
