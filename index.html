@@ -14,7 +14,7 @@
   <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
   <script type="text/javascript" src="js/handlebars.js"></script>
   <script type="text/javascript" src="js/script.js"></script>
-  <script type="text/javascript" src="js/ui.js"></script>
+  <!-- <script type="text/javascript" src="js/ui.js"></script> -->
 </head>
 <body>
   <h1>PartyQueue</h1>
@@ -33,18 +33,15 @@
       </tr>
     </thead>
     <tbody>
-      <script type="text/javascript">
-        twitterConnection("#funqueue"); //2nd parameter should be a callback which receives an object.
-      </script>
       <script id="track-row-template" type="text/x-handlebars-template">
-        <tr id="{{id}}" data-uri="{{uri}}">
-          <td class="title">{{title}}</td>
-          <td class="artists">{{#each artists}}
+        <tr id="{{id}}" data-uri="{{track.uri}}">
+          <td class="title">{{track.title}}</td>
+          <td class="artists">{{#each track.artists}}
             <a class="uri artist" href="{{uri}}">{{name}}</span>
           {{/each}}</td>
           <td class="requests">{{requests}}</td>
           <td class="requesters">{{#each requesters}}
-            <span class="requester">{{user}}</span>
+            <span class="requester">{{name}}</span>
           {{/each}}</td>
         </tr>
       </script>
@@ -55,9 +52,5 @@
   </table>
 
   <input name="nextTrack" id="nextTrack" value="spotify:track:0YbUPI6SaiK2tLLPi8AqIv"></input>
-
-  <script type="text/javascript">
-    twitterConnection(); // Can take hashtag as parameter
-  </script>
 </body>
 </html>
