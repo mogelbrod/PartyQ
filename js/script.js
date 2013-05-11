@@ -157,7 +157,7 @@ require([
       };//}}}
 
       var queue = priorityQueue();
-      var twitter = twitterConnection('#ssh', queue.handleTwitterObject);
+      twitterConnection('#ssh', queue.handleTwitterObject);
 
       //{{{ UI
       $(function() {
@@ -280,7 +280,7 @@ require([
       });//}}}
 
       $('#save').click(function() {
-        twitter = twitterConnection($('#tag').val(), queue.handleTwitterObject);
+        twitterConnection($('#tag').val(), queue.handleTwitterObject);
       })
 
       queue.onRequest(onRequest);
@@ -295,8 +295,8 @@ require([
       "spotify:track:0VnMmNfuTwlhJaxWIRwtb0",
       "spotify:track:2Foc5Q5nqNiosCNqttzHof"]
 
-      mogel = {name: "mogel", url: "http://google.com", timestamp: new Date()};
-      ludo  = {name: "ludo", url: "http://google.com", timestamp: new Date()}
+      mogel = {user: "mogelbrod", url: "http://google.com", timestamp: new Date()};
+      ludo  = {user: "JonssonLudvig", url: "http://google.com", timestamp: new Date()}
 
       function massTest() {
         timedRequest(uris[1], mogel, 800, true);
@@ -306,13 +306,10 @@ require([
       }
 
       function smallTest() {
-        timedRequest(uris[0], mogel, 8000, false);
+        timedRequest(uris[0], mogel, 5000, false);
         timedRequest(uris[1], ludo, 1400, false);
-        timedRequest(uris[2], mogel, 2000, false);
         timedRequest(uris[3], ludo, 2400, false);
-        timedRequest(uris[3], ludo, 3400, false);
-        timedRequest(uris[3], ludo, 2600, false);
-        timedRequest(uris[3], ludo, 2700, false);
+        timedRequest(uris[3], mogel, 2700, false);
 
         setTimeout(function() {
           queue.printQueue();  
