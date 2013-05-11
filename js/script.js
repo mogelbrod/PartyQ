@@ -105,16 +105,16 @@ require([
 
           },
 
-          pop: function(trackID) {
+          pop: function(uri) {
             console.log("pop called");
 
             if (queue.length == 0) {
               return null;
             }
 
-            if (trackID) {
+            if (uri) {
               for (var i = 0; i < queue.length; i++) {
-                if (queue[i].trackID == trackID) {
+                if (queue[i].track.uri == uri) {
                   var row = queue.splice(i,1)[0];
                   self.removeCallback(row.track);
                   return row;
@@ -173,14 +173,6 @@ require([
       var $rows = $list.find('tbody');
       var $emptyRow = $rows.find('tr.empty');
       var trackRowTemplate = Handlebars.compile($('#track-row-template').html());
-
-      // Enable clicking on spotify URIs
-      $(function() {
-        $('a.uri').click(function() {
-          models.application.openURI($(this).attr('href'));
-          return false;
-        })
-      });
 
       /**
        * Simplifies track URI into a valid html ID.
@@ -259,13 +251,22 @@ require([
         });
       }//}}}
 
-      $rows.on('dblclick', 'tr', function(event) {
+      // Force play song when doubleclicked
+      $rows.on('dblclick', 'tr', function(event) {//{{{
         var $row = $(this);
         $row.remove();
+        var uri = $row.data('uri');
+        console.log("manually playing " + uri);
+        playNextTrack(queue.pop(uri));
         event.preventDefault();
         return false;
+      });//}}}
 
-      });
+      // Enable clicking on spotify URIs
+      $('a.uri').click(function() {//{{{
+        models.application.openURI($(this).attr('href'));
+        return false;
+      });//}}}
 
       queue.onRequest(onRequest);
       queue.onPlay(onPlay);
@@ -336,42 +337,48 @@ require([
       // Called when track is changed.
       function changeEventHandler() {
         console.log("changeEventHandler");
-        if(USE_PLAYLIST)
-          addTrackToPlaylist();
-        else
-          changeTrackNow();
+        playNextTrack();
       }
 
-      /*
-         Return the next trackobject to be played.
-         */
-      function getNextTrack(callback) {
-        console.log("Retrieving next track");
-        var req = queue.pop();
-        console.log(req);
-        if (req != null) {
-          console.log("left in queue: " + req.track.uri);
-          req.track.load('name','uri').done(function(track) {
-            callback(track);
-          });
+/*
+ *       function getNextTrack(callback) {
+ *         console.log("Retrieving next track");
+ *         var req = queue.pop();
+ *         console.log(req);
+ *         if (req != null) {
+ *           console.log("left in queue: " + req.track.uri);
+ *           req.track.load('name','uri').done(function(track) {
+ *             callback(track);
+ *           });
+ *         } else {
+ *           console.log("nothing left in queue");
+ *         }
+ *         //console.log("Setting next song: " + uri);
+ *       }
+ * 
+ *       function changeTrackNow() {
+ *         console.log("ChangeTrack");
+ *         getNextTrack(function(track) {
+ *           // models.player.addEventListener('change:track', changeEventHandler);
+ *         });
+ *       }
+ */
+
+      function playNextTrack(overwriteTrack) {
+        var req = overwriteTrack ? overwriteTrack : queue.pop();
+        if (req == null) {
+          console.log("playNextTrack: nothing to play (null)");
         } else {
-          console.log("nothing left in queue");
+          console.log("playNextTrack: next up: " + req.track.uri);
+          req.track.load('name','uri').done(function(track) {
+            console.log("changing song now: " + track.uri);
+            models.player.removeEventListener('change:track', changeEventHandler);
+            models.player.playTrack(track);
+            setTimeout(function() {
+              models.player.addEventListener('change:track', changeEventHandler);
+            }, 100);
+          });
         }
-        //console.log("Setting next song: " + uri);
-      }
-
-      /*
-         Fetches uri and plays that track, if uri is not null.
-         */
-      function changeTrackNow() {
-        console.log("ChangeTrack");
-        getNextTrack(function(track) {
-          models.player.removeEventListener('change:track', changeEventHandler);
-          console.log("changing song now: " + track.uri);
-          displayTrack(track);
-          playSong(track);
-          // models.player.addEventListener('change:track', changeEventHandler);
-        });
       }
 
       /*
@@ -392,21 +399,23 @@ require([
       /*
          Adds next track to our playlist.
          */
-      function addTrackToPlaylist() {    
-        models.player.removeEventListener('change:track', changeEventHandler);
-        console.log("playlist " + tmpPlaylist.name);
-        console.log("loaded");
-        getNextTrack(function(track) {
-          console.log("got track: " + track);
-          console.log("loaded a track");
-          console.log(track);
-          tmpPlaylist.tracks.add(track);
-          // set the playlist as playing now
-          models.player.playContext(tmpPlaylist);
-          console.log("context set");
-          // models.player.addEventListener('change:track', changeEventHandler);
-        });
-      }
+      /*
+       * function addTrackToPlaylist() {    
+       *   models.player.removeEventListener('change:track', changeEventHandler);
+       *   console.log("playlist " + tmpPlaylist.name);
+       *   console.log("loaded");
+       *   getNextTrack(function(track) {
+       *     console.log("got track: " + track);
+       *     console.log("loaded a track");
+       *     console.log(track);
+       *     tmpPlaylist.tracks.add(track);
+       *     // set the playlist as playing now
+       *     models.player.playContext(tmpPlaylist);
+       *     console.log("context set");
+       *     // models.player.addEventListener('change:track', changeEventHandler);
+       *   });
+       * }
+       */
 
       /*
          Plays the song imidiatly.
