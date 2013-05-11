@@ -16,8 +16,20 @@ require([
     })
   });
 
+  parseURL("spoti.fy/Jn1muJ");
+  parseURL("http://open.spotify.com/track/0VnMmNfuTwlhJaxWIRwtb0");
+
   function parseURL(url) {
-    return "spotify:track:" + url.split("/").pop();
+    uri = "";
+    if (url.match("spoti.fi/^")) {
+      console.log("its .fi");
+      //is link of type: spoti.fy/Jn1muJ
+    } else {
+      // Normal
+      console.log("Normal");
+      return "spotify:track:" + url.split("/").pop();
+    }
+    return uri;
   }
 
   priorityQueue = function () {
