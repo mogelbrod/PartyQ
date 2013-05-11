@@ -26,13 +26,15 @@
     </thead>
     <tbody>
       <script id="track-row-template" type="text/x-handlebars-template">
-        <tr id="{{id}}">
+        <tr id="{{id}}" data-uri="{{uri}}">
+          <td class="title">{{title}}</td>
           <td class="artists">{{#each artists}}
-            <span class="artist">{{name}}</span>
+            <a class="uri artist" href="{{uri}}">{{name}}</span>
           {{/each}}</td>
-          <td class="title"><a href="{{uri}}">{{title}}</a></td>
           <td class="requests">{{requests}}</td>
-          <td class="requested-by">{{requestedBy}}</td></tr>
+          <td class="requesters">{{#each requesters}}
+            <span class="requester">{{user}}</span>
+          {{/each}}</td>
         </tr>
       </script>
       <tr class="empty">

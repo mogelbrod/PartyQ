@@ -1,8 +1,4 @@
-h1 {
-  color: red;
-}
-
-table.list {
+* {
 	-moz-user-select: none;             
 	-webkit-user-select: none; 
 }
