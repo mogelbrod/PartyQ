@@ -1,36 +1,29 @@
 'use strict';
 
-var sp = getSpotifyApi(1),
-    trackInfo = document.getElementById('track-info');
+var sp = getSpotifyApi();
+var $list = $('#list');
+var $rows = $list.find('tbody');
 
+var tracksURIs = [
+  "spotify:track:4yJmwG2C1SDgcBbV50xI91",
+  "spotify:track:4uwaTTrDykHbWFBb8RGYWI",
+  "spotify:track:2Foc5Q5nqNiosCNqttzHof"
+];
 
-function updateTrackDetails() {
-  var playerTrackInfo = sp.trackPlayer.getNowPlayingTrack(),
-      infoHTML = '',
-      track;
-  if (playerTrackInfo == null) {
-    infoHTML = 'Nothing playing!';
-  } else {
-    track = playerTrackInfo.track;
-    console.log(playerTrackInfo);
-    console.log(track);
-    infoHTML = '<span id="track-title">' + track.name + '</span>' +
-      'on the album <span id="track-album">' + track.album.name + '</span>' +
-      'by <span id="track-artist">' + track.album.artist.name + '</span>';
-  }
+for (var i = 0; i < tracksURIs.length; i++) {
+  Track.fromURI(tracksURIs[i], function(track) {
+    var artists = track.artists ? track.artists.join(', ') : 'Unknown';
+    var requestedBy = 'Anonymous';
+    $rows.append("<tr><td>"+artists+"</td><td>"+track.name+"</td><td>"+1+"</td><td>"+requestedBy+"</td></tr>");
+  });
+};
 
-  trackInfo.innerHTML = infoHTML;
+requestHandler(track, requestData) {
 }
 
 (function () {
   console.log('init()');
 
-  updateTrackDetails();
-
   sp.trackPlayer.addEventListener('playerStateChanged', function (event) {
-    // Only update the page if the track changed
-    if (event.data.curtrack == true) {
-        updateTrackDetails();
-    }
   });
 })();

@@ -7,10 +7,27 @@
   <link rel="stylesheet" href="sp://import/css/api.css">
   <link rel="stylesheet" href="sp://import/css/shared.css">
   <link rel="stylesheet" href="css/master.css">
+	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="js/script.js"></script>
 </head>
-<body onload="sp = getSpotifyApi(1); sp.require('js/script');">
+<body>
   <h1>PartyQueue</h1>
-  <p id="track-info">
-  </p>
+
+	<table class="list" id="list">
+		<thead>
+			<tr>
+				<th>Artist</th>
+				<th>Track</th>
+				<th>Requests</th>
+				<th>Last requested by</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td></td><td></td><td></td><td></td></tr>
+			<tr>
+				<td colspan="4">No requests have arrived yet, stay tuned!</td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>
