@@ -3,7 +3,6 @@
 	priorityQueue = function () {
 		var queue = new Array();
 		var requestCallbacks = new Array();
-		var sp = getSpotifyApi(), models = sp.require("$api/models");
 
 		var self = {
 
