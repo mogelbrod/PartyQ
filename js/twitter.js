@@ -1,16 +1,17 @@
 /* Twitter connection */
 
-function buildQueueObject(tweet) {
+function buildQueueObject(tweet, callback) {
   var object = new Object();
   object.user = tweet.user.screen_name;
   object.url = tweet.entities.urls[0].expanded_url;
   object.timestamp = tweet.created_at;
   console.log("Queue object created: ");
   console.log(object);
-  //Send to the queue here.
+  if (typeof callback === 'undefined') console.log("No callback for tweet object");
+  else callback(object);
 }
 
-function twitterConnection(hashtag) {
+function twitterConnection(hashtag, callback) {
   var url = "https://stream.twitter.com/1.1/statuses/filter.json";
   var accessor = {
     token: "49442495-CCDhEnx7uRZIukkHlrzKFaQXWnq8yQnSuSYFMqQtY",
@@ -47,7 +48,7 @@ function twitterConnection(hashtag) {
       var string = (messageLen +"-"+ xhr.responseText.length +":"+xhr.responseText.substring(messageLen,xhr.responseText.length));
       if (actualLength > 2) {
         var tweet = $.parseJSON(xhr.responseText.substring(messageLen,xhr.responseText.length));
-        buildQueueObject(tweet);
+        buildQueueObject(tweet, callback);
       }
     }
     messageLen = xhr.responseText.length;
