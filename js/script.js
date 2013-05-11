@@ -45,7 +45,7 @@ require([
           return "spotify:track:" + url.split("/").pop();
         }
       }
-      
+
       priorityQueue = function () {//{{{
         var queue = [];
         var requestCallbacks = [];
@@ -256,8 +256,43 @@ require([
 
       var queue = priorityQueue();
 
-      queue.request("spotify:track:2Foc5Q5nqNiosCNqttzHof",{name: "lujon", url: "http://google.com", timestamp: new Date()});
-      queue.request("spotify:track:2Foc5Q5nqNiosCNqttzHof",{name: "mogel", url: "http://google.com", timestamp: new Date()});
+      uri1 = "spotify:track:3KKaGvEv3xkQpRAUMX4e0l";
+      uri2 = "spotify:track:2voSfpVGeRWNQjIsvUXsDH";
+      uri3 = "spotify:track:0VnMmNfuTwlhJaxWIRwtb0";
+      uri4 = "spotify:track:2Foc5Q5nqNiosCNqttzHof";
+
+      mogel = {name: "mogel", url: "http://google.com", timestamp: new Date()};
+      ludo  = {name: "ludo", url: "http://google.com", timestamp: new Date()}
+
+      function massTest() {
+        timedRequest(uri1, mogel, 800, true);
+        timedRequest(uri2, ludo, 1400, true);
+        timedRequest(uri3, mogel, 2000, true);
+        timedRequest(uri4, ludo, 2400, true);
+      }
+
+      function smallTest() {
+        timedRequest(uri1, mogel, 8000, false);
+        timedRequest(uri2, ludo, 1400, false);
+        timedRequest(uri3, mogel, 2000, false);
+        timedRequest(uri4, ludo, 2400, false);
+      }      
+
+      //massTest();
+      smallTest();
+      
+      function timedRequest(uri, reqData, delay, repeat) {
+        if (repeat) {
+          setInterval(function() {
+            queue.request(uri, reqData);  
+          },
+          delay)  
+        } else {
+          setTimeout(function() {
+            queue.request(uri, reqData);
+          }, delay);
+        }
+      }
 
       queue.printQueue();
       queue.onRequest(onRequest);
