@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="sp://import/css/shared.css">
   <link rel="stylesheet" href="css/master.css">
 	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="js/handlebars.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
 </head>
 <body>
@@ -23,13 +24,20 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr><td></td><td></td><td></td><td></td></tr>
-			<tr>
+			<script id="track-row-template" type="text/x-handlebars-template">
+				<tr id="{{id}}">
+					<td class="artists">{{artists}}</td>
+					<td class="title">{{title}}</td>
+					<td class="requests">{{requests}}</td>
+					<td class="requested-by">{{requestedBy}}</td></tr>
+				</tr>
+			</script>
+			<tr class="empty">
 				<td colspan="4">No requests have arrived yet, stay tuned!</td>
-
-        <input name="nextTrack" id="nextTrack" value="spotify:track:0YbUPI6SaiK2tLLPi8AqIv"></input>
 			</tr>
 		</tbody>
 	</table>
+
+	<input name="nextTrack" id="nextTrack" value="spotify:track:0YbUPI6SaiK2tLLPi8AqIv"></input>
 </body>
 </html>
