@@ -8,14 +8,6 @@ require([
     '$views/image#Image'
     ], function(models, Location, Search, Toplist, buttons, List, Image) {
 
-      // Enable clicking on spotify URIs
-      $(function() {
-        $('a.uri').click(function() {
-          models.application.openURI($(this).attr('href'));
-          return false;
-        })
-      });
-
       console.log("do some parsing");
       parseURL("http://spoti.fi/Jn1muJ");
       parseURL("http://open.spotify.com/track/0VnMmNfuTwlhJaxWIRwtb0");
@@ -157,7 +149,16 @@ require([
         return self;
       };//}}}
 
+      var queue = priorityQueue();
+
       //{{{ UI
+      $(function() {
+        // Enable clicking on spotify URIs
+        $('a.uri').click(function() {
+          models.application.openURI($(this).attr('href'));
+          return false;
+        });
+
       var $list = $('#list');
       var $rows = $list.find('tbody');
       var $emptyRow = $rows.find('tr.empty');
@@ -251,10 +252,14 @@ require([
         $row.remove();
         event.preventDefault();
         return false;
-      })
-      //}}}
 
-      var queue = priorityQueue();
+      });
+
+      queue.onRequest(onRequest);
+      queue.onPlay(onPlay);
+
+      });
+      //}}}
 
       uri1 = "spotify:track:3KKaGvEv3xkQpRAUMX4e0l";
       uri2 = "spotify:track:2voSfpVGeRWNQjIsvUXsDH";
@@ -295,8 +300,6 @@ require([
       }
 
       queue.printQueue();
-      queue.onRequest(onRequest);
-      queue.onPlay(onPlay);
       // twitterConnection('#funq', queue.request);
 
       //{{{ Playlist / queue handling

@@ -26,7 +26,7 @@
   <table class="list" id="list">
     <thead>
       <tr>
-        <th class="track">Track</th>
+        <th class="name">Track</th>
         <th class="artist">Artist</th>
         <th class="requests">Requests</th>
         <th class="requesters">Requested by</th>
@@ -35,7 +35,7 @@
     <tbody>
       <script id="track-row-template" type="text/x-handlebars-template">
         <tr id="{{id}}" data-uri="{{track.uri}}">
-          <td class="title">{{track.title}}</td>
+          <td class="name">{{track.name}}</td>
           <td class="artists">{{#each track.artists}}
             <a class="uri artist" href="{{uri}}">{{name}}</span>
           {{/each}}</td>
