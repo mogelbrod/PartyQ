@@ -20,7 +20,8 @@
   "RequiredInterface": 1,
   "RequiredPermissions": [
     "http://api.twitter.com",
-    "http://search.twitter.com/"
+    "http://search.twitter.com/",
+    "https://stream.twitter.com"
   ],
   "SupportedLanguages": [
     "en"

@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="sp://import/css/api.css">
   <link rel="stylesheet" href="sp://import/css/shared.css">
   <link rel="stylesheet" href="css/master.css">
+  <script type="text/javascript" src="js/sha1.js"></script>
+  <script type="text/javascript" src="js/oauth.js"></script>
+  <script type="text/javascript" src="js/twitter.js"></script>
   <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
   <script type="text/javascript" src="js/handlebars.js"></script>
   <script type="text/javascript" src="js/script.js"></script>
@@ -25,6 +28,10 @@
       </tr>
     </thead>
     <tbody>
+      <script type="text/javascript">
+        twitterConnection(); // Can take hashtag as parameter
+      </script>
+
       <script id="track-row-template" type="text/x-handlebars-template">
         <tr id="{{id}}" data-uri="{{uri}}">
           <td class="title">{{title}}</td>
