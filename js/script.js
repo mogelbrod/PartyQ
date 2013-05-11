@@ -89,6 +89,11 @@ require([
 
           pop: function(trackID) {
             console.log("pop called");
+
+            if (queue.length == 0) {
+              return null;
+            }
+
             if (trackID) {
               for (var i = 0; i < queue.length; i++) {
                 if (queue[i].trackID == trackID) {
