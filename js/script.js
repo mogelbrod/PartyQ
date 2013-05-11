@@ -88,6 +88,7 @@ require([
           },
 
           pop: function(trackID) {
+            console.log("pop called");
             if (trackID) {
               for (var i = 0; i < queue.length; i++) {
                 if (queue[i].trackID == trackID) {
@@ -153,7 +154,7 @@ require([
        * Simplifies track URI into a valid html ID.
        */
       function trackID(uri) {
-        return uri.replace(/[^a-z0-9]/gi, '_');
+        return String(uri).replace(/[^a-z0-9]/gi, '_');
       }
 
       function createTrackRow(data) {
@@ -244,7 +245,7 @@ require([
 
       //{{{ Playlist / queue handling
       var tmpPlaylist  = null;
-      var USE_PLAYLIST = true;
+      var USE_PLAYLIST = false;
 
       // Triggers changeTrack() when track is changed. Logic!
       models.player.addEventListener('change:track', changeEventHandler);
@@ -266,6 +267,7 @@ require([
       function getNextTrack(callback) {
         console.log("Retrieving next track");
         var req = queue.pop();
+        console.log(req);
         if (req != null) {
           console.log("left in queue: " + req.track.uri);
           req.track.load('name','uri').done(function(track) {
@@ -283,7 +285,7 @@ require([
       function changeTrackNow() {
         console.log("ChangeTrack");
         getNextTrack(function(track) {
-          console.log("changing song now: " + uri);
+          console.log("changing song now: " + track.uri);
           displayTrack(track);
           playSong(track);
         });
@@ -308,6 +310,7 @@ require([
          Adds next track to our playlist.
          */
       function addTrackToPlaylist() {    
+        models.player.removeEventListener('change:track', changeEventHandler);
         console.log("playlist " + tmpPlaylist.name);
         console.log("loaded");
         getNextTrack(function(track) {
@@ -318,6 +321,7 @@ require([
           // set the playlist as playing now
           models.player.playContext(tmpPlaylist);
           console.log("context set");
+          models.player.addEventListener('change:track', changeEventHandler);
         });
       }
 
@@ -325,7 +329,9 @@ require([
          Plays the song imidiatly.
          */
       function playSong(track) {
+        models.player.removeEventListener('change:track', changeEventHandler);
         models.player.playTrack(track);
+        models.player.addEventListener('change:track', changeEventHandler);
       }
 
       function displayTrack(track) {
