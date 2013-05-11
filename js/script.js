@@ -9,11 +9,32 @@ require([
   ], function(models, Location, Search, Toplist, buttons, List, Image) {
 
   // Get the currently-playing track
-  models.player.load('track').done(updateCurrentTrack);
+  //models.player.load('track').done(updateCurrentTrack);
   // Update the DOM when the song changes
-  models.player.addEventListener('change:track', updateCurrentTrack);
+  models.player.addEventListener('change:track', changeTrack);
 
+  function changeTrack() {
+    console.log("ChangeTrack");
+    playNextSong();
+    //updateCurrentTrack();
+  }
 
+  function displayTrack(track) {
+    console.log(track.name);
+  }
+
+  function playNextSong() {
+    uri = $("#nextTrack").val();
+    console.log("Setting next song: " + uri);
+    track = models.Track.fromURI(uri).load('name').done(
+      function(track) {
+        displayTrack(track);
+        models.player.playTrack(track);  
+    });
+
+    //
+  }
+  /*
   function updateCurrentTrack(){
       var currentHTML = document.getElementById('current-track');
       if (models.player.track == null) {
