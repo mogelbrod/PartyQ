@@ -41,7 +41,7 @@ function twitterConnection(hashtag) {
      console.log("Twitter connection OK");
   } else if(xhr.readyState == 3){
     //Receiving stream
-    console.log("Now receiveing Twitter stream");
+    console.log("Now receiving Twitter stream");
     if (messageLen < xhr.responseText.length){
       var actualLength = xhr.responseText.length - messageLen;
       var string = (messageLen +"-"+ xhr.responseText.length +":"+xhr.responseText.substring(messageLen,xhr.responseText.length));
