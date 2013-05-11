@@ -8,6 +8,14 @@ require([
   '$views/image#Image'
   ], function(models, Location, Search, Toplist, buttons, List, Image) {
 
+  // Enable clicking on spotify URIs
+  $(function() {
+    $('a.uri').click(function() {
+      models.application.openURI($(this).attr('href'));
+      return false;
+    })
+  });
+
   var tmpPlaylist  = null;
   var USE_PLAYLIST = true;
   
