@@ -290,9 +290,11 @@ require([
       function changeTrackNow() {
         console.log("ChangeTrack");
         getNextTrack(function(track) {
+          models.player.removeEventListener('change:track', changeEventHandler);
           console.log("changing song now: " + track.uri);
           displayTrack(track);
           playSong(track);
+          // models.player.addEventListener('change:track', changeEventHandler);
         });
       }
 
@@ -326,7 +328,7 @@ require([
           // set the playlist as playing now
           models.player.playContext(tmpPlaylist);
           console.log("context set");
-          models.player.addEventListener('change:track', changeEventHandler);
+          // models.player.addEventListener('change:track', changeEventHandler);
         });
       }
 
@@ -336,7 +338,9 @@ require([
       function playSong(track) {
         models.player.removeEventListener('change:track', changeEventHandler);
         models.player.playTrack(track);
-        models.player.addEventListener('change:track', changeEventHandler);
+        setTimeout(function() {
+          models.player.addEventListener('change:track', changeEventHandler);
+        }, 100);
       }
 
       function displayTrack(track) {
