@@ -48,7 +48,7 @@ require([
 
           clear: function() {
             queue = [];
-            playCallback(null);
+            self.playCallback(null);
           },
 
 
@@ -280,6 +280,7 @@ require([
       });//}}}
 
       $('#save').click(function() {
+        queue.clear();
         twitterConnection($('#tag').val(), queue.handleTwitterObject);
       })
 
