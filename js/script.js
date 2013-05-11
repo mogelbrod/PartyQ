@@ -17,15 +17,27 @@ require([
   });
 
   console.log("do some parsing");
-  parseURL("spoti.fi/Jn1muJ");
+  parseURL("http://spoti.fi/Jn1muJ");
   parseURL("http://open.spotify.com/track/0VnMmNfuTwlhJaxWIRwtb0");
 
   function parseURL(url) {
     uri = "";
-    if (url.substring(0,8) == "spoti.fi" ) {//poti.fi") {
+    if (url.substring(0,15) == "http://spoti.fi" ) {//poti.fi") {
       console.log("its .fi");
       //is link of type: spoti.fy/Jn1muJ
       // We do not handle short urls.
+      $.ajax({
+        type: "GET",
+        url: url,
+        success: function(data) {
+          console.log("META")
+          $(data).find('meta[property="og:url"]').each(function() {
+            console.log($(this).text());
+            console.log(a);
+          });
+        }
+      });
+        
       return null;
     } else {
       // Normal
