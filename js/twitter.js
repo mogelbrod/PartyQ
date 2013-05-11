@@ -3,7 +3,11 @@
 function buildQueueObject(tweet, callback) {
   var object = new Object();
   object.user = tweet.user.screen_name;
-  object.url = tweet.entities.urls[0].expanded_url;
+  if (tweet.entities.urls[0]) {
+    object.url = tweet.entities.urls[0].expanded_url;
+  } else {
+    return;
+  }
   object.timestamp = tweet.created_at;
   console.log("Queue object created: ");
   console.log(object);
@@ -48,6 +52,12 @@ function twitterConnection(hashtag, callback) {
       var string = (messageLen +"-"+ xhr.responseText.length +":"+xhr.responseText.substring(messageLen,xhr.responseText.length));
       if (actualLength > 2) {
         var tweet = $.parseJSON(xhr.responseText.substring(messageLen,xhr.responseText.length));
+        if (tweet.disconnect) {
+          console.log("disconnected twitter");
+          return;
+        };
+        console.log("the tweet!!!!");
+        console.log(tweet);
         buildQueueObject(tweet, callback);
       }
     }

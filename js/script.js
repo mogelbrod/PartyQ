@@ -335,7 +335,7 @@ require([
       }
 
       queue.printQueue();
-      twitterConnection('#funqueue', queue.handleTwitterObject);
+      twitterConnection('#Spotify', queue.handleTwitterObject);
 
       //{{{ Playlist / queue handling
       // Triggers changeTrack() when track is changed. Logic!
