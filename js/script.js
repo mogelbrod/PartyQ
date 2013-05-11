@@ -45,15 +45,16 @@ require([
     //updateCurrentTrack();
   }
 
+  
+  function playSong(track) {
+    models.player.playTrack(track);
+  }
+  
+
   function displayTrack(track) {
     console.log(track.name);
   }
 
-  function playSong(track) {
-    
-    models.player.playTrack(track); 
-    //
-  }
   /*
   function updateCurrentTrack(){
       var currentHTML = document.getElementById('current-track');
