@@ -66,6 +66,16 @@ require([
             }
           },
 
+          handleTwitterObject: function (object) {
+            var uri = 0;
+            uri = parseURL(object.url);
+            if (!uri) {
+              console.log("failed to handle twitter object");
+            } else {
+              self.request(uri, object);
+            }
+          },
+
           request: function(uri, requestData) {
             models.Track.fromURI(uri).load('name').done(function(track) {
               console.log(track.uri + ': ' + track.name.decodeForText());
@@ -312,7 +322,7 @@ require([
       }
 
       queue.printQueue();
-      // twitterConnection('#funq', queue.request);
+      twitterConnection('#funqueue', queue.handleTwitterObject);
 
       //{{{ Playlist / queue handling
       var tmpPlaylist  = null;
