@@ -8,32 +8,25 @@ require([
     '$views/image#Image'
     ], function(models, Location, Search, Toplist, buttons, List, Image) {
 
-      console.log("do some parsing");
-      parseURL("http://spoti.fi/Jn1muJ");
-      parseURL("http://open.spotify.com/track/0VnMmNfuTwlhJaxWIRwtb0");
-
       function parseURL(url) {
         uri = "";
         if (url.substring(0,15) == "http://spoti.fi" ) {//poti.fi") {
-          console.log("its .fi");
           //is link of type: spoti.fy/Jn1muJ
           // We do not handle short urls.
-          $.ajax({
-            type: "GET",
-            url: url,
-            success: function(data) {
-              console.log("META")
-              $(data).find('meta[property="og:url"]').each(function() {
-                console.log($(this).text());
-                console.log(a);
-              });
-            }
-          });
-            
+          /*
+           * $.ajax({
+           *   type: "GET",
+           *   url: url,
+           *   success: function(data) {
+           *     $(data).find('meta[property="og:url"]').each(function() {
+           *       console.log($(this).text());
+           *       console.log(a);
+           *     });
+           *   }
+           * });
+           */
           return null;
         } else {
-          // Normal
-          console.log("Normal");
           return "spotify:track:" + url.split("/").pop();
         }
       }
@@ -51,6 +44,11 @@ require([
 
           onPlay: function(callbackFunction) {
             playCallbacks.push(callbackFunction);
+          },
+
+          clear: function() {
+            queue = [];
+            playCallback(null);
           },
 
 
@@ -77,6 +75,8 @@ require([
           },
 
           request: function(uri, requestData) {
+            if (uri == null || uri == "")
+              return;
             models.Track.fromURI(uri).load('name').done(function(track) {
               console.log(track.uri + ': ' + track.name.decodeForText());
 
@@ -106,8 +106,6 @@ require([
           },
 
           pop: function(uri) {
-            console.log("pop called: " + uri);
-
             if (queue.length == 0) {
               return null;
             }
@@ -159,6 +157,7 @@ require([
       };//}}}
 
       var queue = priorityQueue();
+      var twitter = twitterConnection('#ssh', queue.handleTwitterObject);
 
       //{{{ UI
       $(function() {
@@ -190,7 +189,7 @@ require([
 
       function redraw() {
         $emptyRow.hide();
-        $rows.children().remove();
+        $rows.children().remove(':not(.empty)');
 
         var all = queue.all();
         for (var i = 0; i < all.length; i++) {
@@ -280,6 +279,10 @@ require([
         return false;
       });//}}}
 
+      $('#save').click(function() {
+        twitter = twitterConnection($('#tag').val(), queue.handleTwitterObject);
+      })
+
       queue.onRequest(onRequest);
       queue.onPlay(onPlay);
 
@@ -312,7 +315,6 @@ require([
         timedRequest(uris[3], ludo, 2700, false);
 
         setTimeout(function() {
-          console.log("PRINT QUE!");
           queue.printQueue();  
         },10000);
         
@@ -343,7 +345,7 @@ require([
 
       // Called when track is changed.
       function changeEventHandler() {
-        console.log("changeEventHandler");
+        console.log("change:track event handler called");
         playTrack(queue.pop());
       }
 
@@ -353,7 +355,7 @@ require([
         } else {
           console.log("playTrack: next up: " + req.track.uri);
           req.track.load('name','uri').done(function(track) {
-            console.log("changing song now: " + track.uri);
+            console.log("changing song now: " + track.name.decodeForText());
             models.player.removeEventListener('change:track', changeEventHandler);
             models.player.playTrack(track);
             setTimeout(function() {

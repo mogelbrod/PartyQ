@@ -6,7 +6,7 @@ table.list {
 .wrapper{
 	margin: 5% auto;
 	min-width: 450px;
-	max-width: 500px;
+	max-width: 800px;
 }
 
 .headerText {
@@ -39,6 +39,7 @@ table.list {
 	color: #373737;
 	border-radius: 3px;
 	box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, .1), 0 1px 2px #222;
+	font-size: 20px;
 }
 .inputfield input[type="submit"]{
 	padding-right: 8px;
@@ -69,7 +70,7 @@ table.list {
 }
 
 
-/*.list tr:nth-child(even) {background: #313131}*/
+.list tr:nth-child(even) {background: #313131}
 
 .list td{
 	padding: 2px 5px 2px 5px;
@@ -78,7 +79,6 @@ table.list {
 .list{
 	border-collapse: collapse;
 	width: 100%;
-	background-image: -webkit-linear-gradient(#373737 50%, #313131 50%);
 	background-size: 43px 43px;
 }
 

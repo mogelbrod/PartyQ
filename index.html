@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="sp://import/css/adam.css">
   <link rel="stylesheet" href="sp://import/css/api.css">
   <link rel="stylesheet" href="sp://import/css/shared.css">
-  
   <link rel="stylesheet" href="css/master.css">
   <script type="text/javascript" src="js/sha1.js"></script>
   <script type="text/javascript" src="js/oauth.js"></script>
@@ -14,43 +13,41 @@
   <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
   <script type="text/javascript" src="js/handlebars.js"></script>
   <script type="text/javascript" src="js/script.js"></script>
-  <!-- <script type="text/javascript" src="js/ui.js"></script> -->
 </head>
 <body>
-  <h1>PartyQueue</h1>
-  <div id="settingsPopup"></div>
-
-  <button id="sharePopup">Share!</button>
-  <button id="doPopup">Klicka här!</button>
-
-  <table class="list" id="list">
-    <thead>
-      <tr>
-        <th class="name">Track</th>
-        <th class="artist">Artist</th>
-        <th class="requests">Requests</th>
-        <th class="requesters">Requested by</th>
-      </tr>
-    </thead>
-    <tbody>
-      <script id="track-row-template" type="text/x-handlebars-template">
+	<div class=wrapper>
+	  <div class=header>
+		  <img class=image src="img/partyhat.png" height="120px" width="120px"/>
+		  <div class="headerText">PartyQueue</div>
+		  <div class="inputfield"><input name="hashtag" value="#ssh" id="tag"><input type="submit" id="save" value="Spara"></div>
+		</div>
+	  <table class="list" id="list">
+	    <thead>
+	      <tr>
+	        <th class=title>Track</th>
+	        <th class=artists>Artist</th>
+	        <th class=requests>Requests</th>
+	        <th class=requesters>Requested by</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <script id="track-row-template" type="text/x-handlebars-template">
         <tr id="{{id}}" data-uri="{{track.uri}}">
-          <td class="name">{{track.name}}</td>
+          <td class="title">{{track.name}}</td>
           <td class="artists">{{#each track.artists}}
-            <a class="uri artist" href="{{uri}}">{{name}}</span>
-          {{/each}}</td>
-          <td class="requests">{{requests}}</td>
-          <td class="requesters">{{#each requesters}}
-            <span class="requester">{{user}}</span>
-          {{/each}}</td>
-        </tr>
-      </script>
-      <tr class="empty">
-        <td colspan="4">No requests have arrived yet, stay tuned!</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <input name="nextTrack" id="nextTrack" value="spotify:track:0YbUPI6SaiK2tLLPi8AqIv"></input>
+	            <a class="uri artist" href="{{uri}}">{{name}}</span>
+	          {{/each}}</td>
+	          <td class="requests">{{requests}}</td>
+	          <td class="requesters">{{#each requesters}}
+	            <span class="requester">{{name}}</span>
+	          {{/each}}</td>
+	        </tr>
+	      </script>
+	      <tr class="empty">
+	        <td colspan="4">No requests have arrived yet, stay tuned!</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>
 </body>
 </html>
