@@ -244,6 +244,8 @@ require([
         var $row = $('#' + trackID(track));
         $row.slideUp(function() {
           $row.remove();
+          if ($rows.children().length < 1)
+            $emptyRow.show();
         });
       }//}}}
 
