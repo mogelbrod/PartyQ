@@ -5,29 +5,30 @@ $(function() {
   var trackRowTemplate = Handlebars.compile($('#track-row-template').html());
 
   var tracksURIs = [
-    "spotify:track:4yJmwG2C1SDgcBbV50xI91",
-    "spotify:track:4yJmwG2C1SDgcBbV50xI91",
-    "spotify:track:4uwaTTrDykHbWFBb8RGYWI",
-    "spotify:track:2Foc5Q5nqNiosCNqttzHof",
-    "spotify:track:4uwaTTrDykHbWFBb8RGYWI",
-    "spotify:track:4uwaTTrDykHbWFBb8RGYWI",
-    "spotify:track:4yJmwG2C1SDgcBbV50xI91",
-    "spotify:track:4yJmwG2C1SDgcBbV50xI91",
-    "spotify:track:4yJmwG2C1SDgcBbV50xI91"
+    "top",
+    "top",
+    "ok",
+    "meh",
+    "ok",
+    "ok",
+    "lol",
+    "lol",
+    "top"
   ];
 
   /**
   * Simplifies track URI into a valid html ID.
   */
   function trackID(uri) {
-    return uri.replace(/^spotify:track:/, '');
+    return uri.replace(/[^a-z0-9]/gi, '_');
   }
 
   function createTrackRow(data) {
-    var $row = $('<div>').html(trackRowTemplate(data)).contents();
-    $row.data('requests', data.requests);
-    $row.data('uri', data.uri);
-    return $row;
+    return $('<div>').html(trackRowTemplate(data)).contents();
+  }
+
+  function numRequests($row) {
+    return parseInt($row.find('td.requests').text());
   }
 
   for (var i = 0; i < tracksURIs.length; i++) {
@@ -52,37 +53,42 @@ $(function() {
       ]
     };
 
+    console.log("incoming: " + vars.id);
+
     $emptyRow.hide();
 
     var $existing = $('#' + vars.id);
     // Track exists in list, increment request count
     if ($existing.length) {
-      vars.requests = $existing.data('requests') + 1;
-      console.log(vars);
+      // console.log(vars.id + " exists already: " + $existing.attr('id'));
+      // vars.requests = numRequests($existing) + 1;
 
       // Find new position for track
       var $prevAll = $existing.prevAll();
       var i = $prevAll.length - 1;
       for (; i > 0; --i) {
-        var prevNum = parseInt($prevAll.eq(i).data('requests'));
+        var prevNum = numRequests($prevAll.eq(i));
         if (prevNum > vars.requests)
           break;
       }
       // Reposition track
       $existing.slideUp(function() {
-        $(this).remove();
-        createTrackRow(vars).insertBefore($prevAll.eq(i));
+        // console.log("updated request: "  + vars.id);
+        // console.log(vars);
+        $existing.replaceWith(createTrackRow(vars)).insertBefore($prevAll.eq(i));
       });
     }
     // New request (track does not exist in list)
     else {
+      console.log("new request: " + vars.id);
+      console.log(vars);
       createTrackRow(vars).appendTo($rows);
     }
   }
 
   $rows.on('dblclick', 'tr', function(event) {
     var $row = $(this);
-    console.log($row.data('uri'));
+    console.log($row.data('data').requests);
     $row.remove();
     event.preventDefault();
     return false;
