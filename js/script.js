@@ -41,7 +41,7 @@ require([
       priorityQueue = function () {//{{{
         var queue = [];
         var requestCallbacks = [];
-        var removeCallbacks = [];
+        var playCallbacks = [];
 
         var self = {
 
@@ -50,7 +50,7 @@ require([
           },
 
           onPlay: function(callbackFunction) {
-            removeCallbacks.push(callbackFunction);
+            playCallbacks.push(callbackFunction);
           },
 
 
@@ -60,9 +60,9 @@ require([
             }
           },
 
-          removeCallback: function(track) {
-            for (var i = 0; i < removeCallbacks.length; i++) {
-              removeCallbacks[i](track);
+          playCallback: function(track) {
+            for (var i = 0; i < playCallbacks.length; i++) {
+              playCallbacks[i](track);
             }
           },
 
@@ -106,7 +106,7 @@ require([
           },
 
           pop: function(uri) {
-            console.log("pop called");
+            console.log("pop called: " + uri);
 
             if (queue.length == 0) {
               return null;
@@ -116,13 +116,13 @@ require([
               for (var i = 0; i < queue.length; i++) {
                 if (queue[i].track.uri == uri) {
                   var row = queue.splice(i,1)[0];
-                  self.removeCallback(row.track);
+                  self.playCallback(row.track);
                   return row;
                 }
               }
             } else {
               var row = queue.shift();
-              self.removeCallback(row.track);
+              self.playCallback(row.track);
               return row;
             }
           },
@@ -151,8 +151,7 @@ require([
 
           printQueue: function() {
             for (var i = 0; i < queue.length; i++) {
-              console.log(i + ": " + queue[i].track.artists[0] + " - " + queue[i].track.title  +
-                + queue[i].requests + " requests <br>");
+              console.log(i + ": " + queue[i].track.uri + " / " + queue[i].requests + " requests");
             }
           }
         };
@@ -189,66 +188,79 @@ require([
         return parseInt($row.find('td.requests').text());
       }
 
+      function redraw() {
+        $emptyRow.hide();
+        $rows.children().remove();
+
+        var all = queue.all();
+        for (var i = 0; i < all.length; i++) {
+          var data = all[i];
+          data.id = trackID(data.track.uri);
+          createTrackRow(data).appendTo($rows);
+        };
+
+        if (all.length < 1)
+          $emptyRow.show();
+      }
+
       /**
        * Callback triggered when a track is requested.
        */
       function onRequest(track, requests, requesters) {//{{{
-        console.log("INCOMING REQUEST:");
-        console.log(track);
-        var data = {
-          id: trackID(track.uri),
-          track: track,
-          // uri: track.uri,
-          // artists: [
-          // { name: 'Unknown', uri: 'spotify:artist:518rTAIFPwQjLUSi4Pdzzn' }
-          // ],
-          // title: track,
-          requests: requests,
-          requesters: requesters
-        };
-        console.log(data);
-
-        $emptyRow.hide();
-
-        var $existing = $('#' + data.id);
-        // Track exists in list, increment request count
-        if ($existing.length) {
-          // console.log(data.id + " exists already: " + $existing.attr('id'));
-          // data.requests = numRequests($existing) + 1;
-
-          // Find new position for track
-          var $prevAll = $existing.prevAll();
-          var i = $prevAll.length - 1;
-          for (; i > 0; --i) {
-            var prevNum = numRequests($prevAll.eq(i));
-            if (prevNum > data.requests)
-              break;
-          }
-          // Reposition track
-          $existing.slideUp(function() {
-            // console.log("updated request: "  + data.id);
-            // console.log(vars);
-            $existing.replaceWith(createTrackRow(data)).insertBefore($prevAll.eq(i));
-          });
-        }
-        // New request (track does not exist in list)
-        else {
-          console.log("new request: " + data.id);
-          console.log(data);
-          createTrackRow(data).appendTo($rows);
-        }
+        redraw();
+/*
+ *         console.log("INCOMING REQUEST:");
+ *         console.log(track);
+ *         var data = {
+ *           id: trackID(track.uri),
+ *           track: track,
+ *           // uri: track.uri,
+ *           // artists: [
+ *           // { name: 'Unknown', uri: 'spotify:artist:518rTAIFPwQjLUSi4Pdzzn' }
+ *           // ],
+ *           // title: track,
+ *           requests: requests,
+ *           requesters: requesters
+ *         };
+ *         console.log(data);
+ * 
+ *         $emptyRow.hide();
+ * 
+ *         var $existing = $('#' + data.id);
+ *         // Track exists in list, increment request count
+ *         if ($existing.length) {
+ *           // console.log(data.id + " exists already: " + $existing.attr('id'));
+ *           // data.requests = numRequests($existing) + 1;
+ * 
+ *           // Find new position for track
+ *           var $prevAll = $existing.prevAll();
+ *           var i = $prevAll.length - 1;
+ *           for (; i > 0; --i) {
+ *             var prevNum = numRequests($prevAll.eq(i));
+ *             if (prevNum > data.requests)
+ *               break;
+ *           }
+ *           // Reposition track
+ *           $existing.slideUp(function() {
+ *             // console.log("updated request: "  + data.id);
+ *             // console.log(vars);
+ *             $existing.replaceWith(createTrackRow(data)).insertBefore($prevAll.eq(i));
+ *           });
+ *         }
+ *         // New request (track does not exist in list)
+ *         else {
+ *           console.log("new request: " + data.id);
+ *           console.log(data);
+ *           createTrackRow(data).appendTo($rows);
+ *         }
+ */
       }//}}}
 
       /**
        * Callback triggered when a track is played (and therefore removed from the list).
        */
       function onPlay(track) {//{{{
-        var $row = $('#' + trackID(track));
-        $row.slideUp(function() {
-          $row.remove();
-          if ($rows.children().length < 1)
-            $emptyRow.show();
-        });
+        redraw();
       }//}}}
 
       // Force play song when doubleclicked
@@ -257,7 +269,7 @@ require([
         $row.remove();
         var uri = $row.data('uri');
         console.log("manually playing " + uri);
-        playNextTrack(queue.pop(uri));
+        playTrack(queue.pop(uri));
         event.preventDefault();
         return false;
       });//}}}
@@ -326,50 +338,20 @@ require([
       twitterConnection('#funqueue', queue.handleTwitterObject);
 
       //{{{ Playlist / queue handling
-      var tmpPlaylist  = null;
-      var USE_PLAYLIST = false;
-
       // Triggers changeTrack() when track is changed. Logic!
       models.player.addEventListener('change:track', changeEventHandler);
-
-      createPlaylist();
 
       // Called when track is changed.
       function changeEventHandler() {
         console.log("changeEventHandler");
-        playNextTrack();
+        playTrack(queue.pop());
       }
 
-/*
- *       function getNextTrack(callback) {
- *         console.log("Retrieving next track");
- *         var req = queue.pop();
- *         console.log(req);
- *         if (req != null) {
- *           console.log("left in queue: " + req.track.uri);
- *           req.track.load('name','uri').done(function(track) {
- *             callback(track);
- *           });
- *         } else {
- *           console.log("nothing left in queue");
- *         }
- *         //console.log("Setting next song: " + uri);
- *       }
- * 
- *       function changeTrackNow() {
- *         console.log("ChangeTrack");
- *         getNextTrack(function(track) {
- *           // models.player.addEventListener('change:track', changeEventHandler);
- *         });
- *       }
- */
-
-      function playNextTrack(overwriteTrack) {
-        var req = overwriteTrack ? overwriteTrack : queue.pop();
+      function playTrack(req) {
         if (req == null) {
-          console.log("playNextTrack: nothing to play (null)");
+          console.log("playTrack: nothing to play (null)");
         } else {
-          console.log("playNextTrack: next up: " + req.track.uri);
+          console.log("playTrack: next up: " + req.track.uri);
           req.track.load('name','uri').done(function(track) {
             console.log("changing song now: " + track.uri);
             models.player.removeEventListener('change:track', changeEventHandler);
@@ -381,55 +363,5 @@ require([
         }
       }
 
-      /*
-       * Initailly set up a playlist
-       */
-      function createPlaylist() {
-        console.log("Create custom playlist");
-        p = models.Playlist.createTemporary("CustomList"); //TODO change name
-        p.done(function(pList){
-          console.log("done. The playlist is ours");
-          pList.load('tracks').done(function(loadedPlaylist){
-            console.log("loaded");
-            tmpPlaylist = loadedPlaylist;
-          });
-        });
-      }
-
-      /*
-         Adds next track to our playlist.
-         */
-      /*
-       * function addTrackToPlaylist() {    
-       *   models.player.removeEventListener('change:track', changeEventHandler);
-       *   console.log("playlist " + tmpPlaylist.name);
-       *   console.log("loaded");
-       *   getNextTrack(function(track) {
-       *     console.log("got track: " + track);
-       *     console.log("loaded a track");
-       *     console.log(track);
-       *     tmpPlaylist.tracks.add(track);
-       *     // set the playlist as playing now
-       *     models.player.playContext(tmpPlaylist);
-       *     console.log("context set");
-       *     // models.player.addEventListener('change:track', changeEventHandler);
-       *   });
-       * }
-       */
-
-      /*
-         Plays the song imidiatly.
-         */
-      function playSong(track) {
-        models.player.removeEventListener('change:track', changeEventHandler);
-        models.player.playTrack(track);
-        setTimeout(function() {
-          models.player.addEventListener('change:track', changeEventHandler);
-        }, 100);
-      }
-
-      function displayTrack(track) {
-        console.log(track.name);
-      }
       //}}}
     });
