@@ -42,9 +42,9 @@ function jodeli() {
   } else if(xhr.readyState == 3){ 
   //Receiving stream
     if (messageLen < xhr.responseText.length){
-      alert(messageLen +"-"+ xhr.responseText.length +":"+xhr.responseText.substring(messageLen,xhr.responseText.length));
+      console.log(messageLen +"-"+ xhr.responseText.length +":"+xhr.responseText.substring(messageLen,xhr.responseText.length));
     }
-    messageLen = xhr.responseText.length;           
+    messageLen = xhr.responseText.length;
     }else if(xhr.readyState == 4) {}    
     // Connection completed
   };  
