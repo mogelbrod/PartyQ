@@ -15,25 +15,22 @@ require([
       function parseURL(url) {
         uri = "";
         if (url.substring(0,15) == "http://spoti.fi" ) {//poti.fi") {
-          console.log("its .fi");
           //is link of type: spoti.fy/Jn1muJ
           // We do not handle short urls.
-          $.ajax({
-            type: "GET",
-            url: url,
-            success: function(data) {
-              console.log("META")
-              $(data).find('meta[property="og:url"]').each(function() {
-                console.log($(this).text());
-                console.log(a);
-              });
-            }
-          });
-            
+          /*
+           * $.ajax({
+           *   type: "GET",
+           *   url: url,
+           *   success: function(data) {
+           *     $(data).find('meta[property="og:url"]').each(function() {
+           *       console.log($(this).text());
+           *       console.log(a);
+           *     });
+           *   }
+           * });
+           */
           return null;
         } else {
-          // Normal
-          console.log("Normal");
           return "spotify:track:" + url.split("/").pop();
         }
       }
@@ -312,7 +309,6 @@ require([
         timedRequest(uris[3], ludo, 2700, false);
 
         setTimeout(function() {
-          console.log("PRINT QUE!");
           queue.printQueue();  
         },10000);
         
