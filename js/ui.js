@@ -37,9 +37,9 @@ $(function() {
   };
 
   /**
-   * Remote request callback function
+   * Callback triggered when a track is requested.
    */
-  function onRequest(track, data, tweetData) {
+  function onRequest(track, data, tweetData) {//{{{
     var vars = {
       id: trackID(track),
       uri: track,
@@ -84,11 +84,20 @@ $(function() {
       console.log(vars);
       createTrackRow(vars).appendTo($rows);
     }
-  }
+  }//}}}
+
+  /**
+   * Callback triggered when a track is played (and therefore removed from the list).
+   */
+  function onPlay(track) {//{{{
+    var $row = $('#' + trackID(track));
+    $row.slideUp(function() {
+      $row.remove();
+    });
+  }//}}}
 
   $rows.on('dblclick', 'tr', function(event) {
     var $row = $(this);
-    console.log($row.data('data').requests);
     $row.remove();
     event.preventDefault();
     return false;

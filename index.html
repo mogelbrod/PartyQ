@@ -21,17 +21,13 @@
   <table class="list" id="list">
     <thead>
       <tr>
-        <th>Artist</th>
-        <th>Track</th>
-        <th>Requests</th>
-        <th>Requested by</th>
+        <th class="track">Track</th>
+        <th class="artist">Artist</th>
+        <th class="requests">Requests</th>
+        <th class="requesters">Requested by</th>
       </tr>
     </thead>
     <tbody>
-      <script type="text/javascript">
-        twitterConnection(); // Can take hashtag as parameter
-      </script>
-
       <script id="track-row-template" type="text/x-handlebars-template">
         <tr id="{{id}}" data-uri="{{uri}}">
           <td class="title">{{title}}</td>
@@ -51,5 +47,9 @@
   </table>
 
   <input name="nextTrack" id="nextTrack" value="spotify:track:0YbUPI6SaiK2tLLPi8AqIv"></input>
+
+  <script type="text/javascript">
+    twitterConnection(); // Can take hashtag as parameter
+  </script>
 </body>
 </html>
