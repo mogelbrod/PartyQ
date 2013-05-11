@@ -149,8 +149,8 @@ require([
 
           printQueue: function() {
             for (var i = 0; i < queue.length; i++) {
-              console.log(i + ": " + queue[i].artists[0].name + " - " + queue[i].title 
-                  + " (trackID: " + queue[i].id +  "), " + queue[i].requests + " requests <br>");
+              console.log(i + ": " + queue[i].track.artists[0] + " - " + queue[i].track.title  +
+                + queue[i].requests + " requests <br>");
             }
           }
         };
@@ -256,26 +256,36 @@ require([
 
       var queue = priorityQueue();
 
-      uri1 = "spotify:track:3KKaGvEv3xkQpRAUMX4e0l";
-      uri2 = "spotify:track:2voSfpVGeRWNQjIsvUXsDH";
-      uri3 = "spotify:track:0VnMmNfuTwlhJaxWIRwtb0";
-      uri4 = "spotify:track:2Foc5Q5nqNiosCNqttzHof";
+      uris = [
+      "spotify:track:3KKaGvEv3xkQpRAUMX4e0l",
+      "spotify:track:2voSfpVGeRWNQjIsvUXsDH",
+      "spotify:track:0VnMmNfuTwlhJaxWIRwtb0",
+      "spotify:track:2Foc5Q5nqNiosCNqttzHof"]
 
       mogel = {name: "mogel", url: "http://google.com", timestamp: new Date()};
       ludo  = {name: "ludo", url: "http://google.com", timestamp: new Date()}
 
       function massTest() {
-        timedRequest(uri1, mogel, 800, true);
-        timedRequest(uri2, ludo, 1400, true);
-        timedRequest(uri3, mogel, 2000, true);
-        timedRequest(uri4, ludo, 2400, true);
+        timedRequest(uris[1], mogel, 800, true);
+        timedRequest(uris[2], ludo, 1400, true);
+        timedRequest(uris[3], mogel, 2000, true);
+        timedRequest(uris[0], ludo, 2400, true);
       }
 
       function smallTest() {
-        timedRequest(uri1, mogel, 8000, false);
-        timedRequest(uri2, ludo, 1400, false);
-        timedRequest(uri3, mogel, 2000, false);
-        timedRequest(uri4, ludo, 2400, false);
+        timedRequest(uris[0], mogel, 8000, false);
+        timedRequest(uris[1], ludo, 1400, false);
+        timedRequest(uris[2], mogel, 2000, false);
+        timedRequest(uris[3], ludo, 2400, false);
+        timedRequest(uris[3], ludo, 3400, false);
+        timedRequest(uris[3], ludo, 2600, false);
+        timedRequest(uris[3], ludo, 2700, false);
+
+        setTimeout(function() {
+          console.log("PRINT QUE!");
+          queue.printQueue();  
+        },10000);
+        
       }      
 
       //massTest();
