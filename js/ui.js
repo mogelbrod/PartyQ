@@ -1,3 +1,18 @@
+require(['$api/models'], function(models) {
+
+  // Show share popup
+  var shareHTML = document.getElementById('sharePopup');
+  var shareURI = 'spotify:track:249E7AgSyA4vhtXNEjQYb5';
+  var rect = shareHTML.getBoundingClientRect();
+  shareHTML.addEventListener('click', showSharePopup);
+
+  function showSharePopup(){
+    models.client.showShareUI(shareURI, 'Check out my jam',
+      {x:((rect.width/2) + rect.left), y:rect.top});
+  }
+
+});
+
 $(function() {
   var $list = $('#list');
   var $rows = $list.find('tbody');
