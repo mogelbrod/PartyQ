@@ -318,8 +318,8 @@ require([
         
       }      
 
-      //massTest();
-      smallTest();
+      // massTest();
+      // smallTest();
       
       function timedRequest(uri, reqData, delay, repeat) {
         if (repeat) {
@@ -333,9 +333,6 @@ require([
           }, delay);
         }
       }
-
-      queue.printQueue();
-      twitterConnection('#Spotify', queue.handleTwitterObject);
 
       //{{{ Playlist / queue handling
       // Triggers changeTrack() when track is changed. Logic!
