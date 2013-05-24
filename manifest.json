@@ -21,7 +21,8 @@
   "RequiredPermissions": [
     "http://api.twitter.com",
     "http://search.twitter.com/",
-    "https://stream.twitter.com"
+    "https://stream.twitter.com",
+    "http://www.google-analytics.com"
   ],
   "SupportedLanguages": [
     "en"
