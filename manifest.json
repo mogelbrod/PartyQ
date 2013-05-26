@@ -20,6 +20,7 @@
   "RequiredInterface": 1,
   "RequiredPermissions": [
     "http://api.twitter.com",
+    "https://api.twitter.com",    
     "http://search.twitter.com/",
     "https://stream.twitter.com",
     "http://www.google-analytics.com"

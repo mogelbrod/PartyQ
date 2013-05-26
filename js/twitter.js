@@ -15,6 +15,46 @@ function buildQueueObject(tweet, callback) {
   else callback(object);
 }
 
+function twitterAuth() {
+    var accessor = {
+    token: "49442495-CCDhEnx7uRZIukkHlrzKFaQXWnq8yQnSuSYFMqQtY",
+    tokenSecret: "QKCXBGzsgCHZAnM1dsmnAEKqha1STbICtM5yqoYe9sA",
+    consumerKey : "6QbZ3XKblVamEQPfNzD9AQ",
+    consumerSecret: "DsIqaxGHAO7FirdBLJtRtoG7RlkN5YzLVeVZ0iyrmfQ",
+  };
+
+
+  var message = {
+    action: escape("https://api.twitter.com/oauth/request_token/"),
+    method: 'POST',
+    oauthCallback: escape("http://partyq.info")
+  };
+  OAuth.completeRequest(message, accessor);
+  OAuth.SignatureMethod.sign(message, accessor);
+  console.log(message);
+  $.ajax({
+    type: 'POST',
+    url: message.action,
+    beforeSend: function(request) {
+      console.log(request);
+      request.setRequestHeader("Authorization", message);
+    },
+    success: function(a,b,c) {
+      console.log(a);
+      console.log(b);
+      console.log(c);
+    },
+    error: function(error) {
+      console.log("ERROR!!!!!!!!!!!");
+      console.log(error);
+    }
+  });
+}
+
+function handleTwitterSignIn(responseText) {
+  console.log(responseText);
+}
+
 function twitterConnection(hashtag, callback) {
   var url = "https://stream.twitter.com/1.1/statuses/filter.json";
   var accessor = {

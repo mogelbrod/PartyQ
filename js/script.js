@@ -7,9 +7,12 @@ require([
     '$views/list#List',
     '$views/image#Image'
     ], function(models, Location, Search, Toplist, buttons, List, Image) {
-
+      models.application.addEventListener("arguments", function(){
+        console.log("JOOOOOOOODU");
+      });
+      twitterAuth();
       function parseURL(url) {
-        uri = "";
+        app = "";
         if (url.substring(0,15) == "http://spoti.fi" ) {//poti.fi") {
           //is link of type: spoti.fy/Jn1muJ
           // We do not handle short urls.
