@@ -1,14 +1,14 @@
 {
   "AppName": {
-    "en": "PartyQueue"
+    "en": "PartyQ"
   },
   "AppDescription": {
     "en": "Party queue utilizing twitter to let partygoers queue songs."
   },
   "AppIcon": {
-    "36x18": "tutorial.png"
+    "36x18": "icon-36x18.png"
   },
-  "BundleIdentifier": "party",
+  "BundleIdentifier": "partyq",
   "BundleType": "Application",
   "BundleVersion": "0.1",
   "Dependencies": {
@@ -20,8 +20,10 @@
   "RequiredInterface": 1,
   "RequiredPermissions": [
     "http://api.twitter.com",
+    "https://api.twitter.com",
     "http://search.twitter.com/",
-    "https://stream.twitter.com"
+    "https://stream.twitter.com",
+    "http://www.google-analytics.com"
   ],
   "SupportedLanguages": [
     "en"
