@@ -1,103 +1,156 @@
-table.list {
-	-moz-user-select: none;             
-	-webkit-user-select: none;
+/*{{{ Spotify App API Imports */
 
+/* @import url('sp://import/css/eve.css'); */
+@import url('sp://import/css/adam.css');
+@import url('sp://import/css/api.css');
+@import url('sp://import/css/shared.css');
+
+/*}}}*/
+/*{{{ Base layout */
+
+body {
+	padding: 20px;
 }
-.wrapper{
-	margin: 5% auto;
+
+#wrapper {
+	margin: 0 auto;
 	min-width: 450px;
 	max-width: 800px;
 }
 
-.headerText {
-	font-family: Lucida Grande, Helvetica, Arial;
-	color: white;
-	font-size: 30px;
+/*}}}*/
+/*{{{ Global elements / typography */
+
+.cf:before, .cf:after {
+	content: " ";
+	display: table;
+}
+.cf:after { clear: both; }
+
+h1, h2, h3 {
+	line-height: 1.25;
 	font-weight: bold;
-	padding-top: 10px;
-	padding-left: 135px;
 	text-shadow: initial;
 }
 
-.header{
-	height: 120px;
-	position: relative;
+/*}}}*/
+/*{{{ Header */
+
+.header {
 	margin-bottom: 20px;
+	line-height: 32px;
+	vertical-align: middle;
 }
 
-
-.inputfield{
-	position: absolute;
-	bottom: 0px;
-	left: 135px;
-}
-
-.inputfield input{
-	background: #F2F9F2;
-	border: 0px;
-	padding: 3px;
-	color: #373737;
-	border-radius: 3px;
-	box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, .1), 0 1px 2px #222;
-	font-size: 20px;
-}
-.inputfield input[type="submit"]{
-	padding-right: 8px;
-	padding-left: 8px;
-	}
-
-.inputfield input[type="submit"]:active{
-	background: #EFF4EF;
-	}
-
-.image{
+.header .logo,
+.header .options {
 	float: left;
 }
-
-.list thead{
-	background:#959595;
-	background-image: -webkit-linear-gradient(#BBBCBC, #888989);
-	text-align: left;
-	color: black;
-	text-shadow: initial;
+.header .logo > *,
+.header .options > * {
+	display: inline-block;
+	vertical-align: middle;
 }
 
-.list thead th{
-	padding: 1px 5px 1px 5px;
-	border: 1px solid #5F6060;
-	border-top: 1px solid #A9A8A8;
-	border-bottom: 1px solid #373737;
+.header h1 {
+	font-size: 24px;
+	letter-spacing: 1px;
 }
 
-
-.list tr:nth-child(even) {background: #313131}
-
-.list td{
-	padding: 2px 5px 2px 5px;
+.header img {
+	margin-right: 15px;
+	border-radius: 5px;
+	width: 30px;
 }
 
-.list{
-	border-collapse: collapse;
+.header .options {
+	margin-left: 50px;
+}
+
+.switch-input {
+	display: none;
+}
+.switch-input + label.switch {
+	position: relative;
+	display: inline-block;
+	width: 57px;
+	height: 23px;
+	background: url('../img/switch.png') no-repeat 0 0;
+	cursor: pointer;
+}
+.switch-input:checked + label.switch {
+	background-position: 0 -23px;
+}
+
+/*}}}*/
+/*{{{ Throbber */
+
+@-webkit-keyframes throbber {
+	0%     { background-position-x: 0; }
+	8.33%  { background-position-x: -32px; }
+	16.66% { background-position-x: -64px; }
+	25%    { background-position-x: -96px; }
+	33.33% { background-position-x: -128px; }
+	41.66% { background-position-x: -160px; }
+	50%    { background-position-x: -192px; }
+	58.33% { background-position-x: -224px; }
+	66.66% { background-position-x: -256px; }
+	75%    { background-position-x: -288px; }
+	83.33% { background-position-x: -320px; }
+	91.66% { background-position-x: -352px; }
+}
+
+.loading-throbber {
+	display: none;
+}
+.loading .loading-throbber {
+	-webkit-animation: throbber 1s infinite;
+	-webkit-animation-timing-function: step-start;
+	display: inline-block;
+	margin-top: -4px;
+	width: 30px;
+	height: 30px;
+	vertical-align: middle;
+	background: url('../img/throbber.png') no-repeat 0 0;
+}
+
+/*}}}*/
+/*{{{ List */
+
+.list {
+	box-sizing: border-box;
+	border-collapse: separate;
+	border-spacing: 0;
 	width: 100%;
-	background-size: 43px 43px;
+	text-align: left;
+	-moz-user-select: none;             
+	-webkit-user-select: none;
 }
 
-.artist{
-	width: 35%;
-	text-overflow:ellipsis;
+.list thead tr {
+	background: -webkit-linear-gradient(top, #cccccc 0%, #a8a8a8 2%, #868686 98%, #292929 100%);
+	text-shadow: 0px 1px 0px rgba(250, 250, 250, 0.4);
+	color: #111;
 }
 
-.track{
-	width: 35%;
-	text-overflow:ellipsis;
+.list th {
+	padding: 1px 5px;
+	border-left: 1px solid #aaa;
+	border-right: 1px solid #666;
 }
 
-.requests{
-	width: 50px;
-	text-align: right;
+.list tbody tr { background: #333; }
+.list tbody tr:nth-child(even) { background: #303030; }
+
+.list td {
+	padding: 2px 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
-.requesters{
-	text-align: right;
-	text-overflow:ellipsis;
-	width: 30%;
+.list .track { width: 30%; }
+.list .artists { width: 30%; }
+.list .requesters { width: 40%; }
+
+/*}}}*/

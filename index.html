@@ -1,53 +1,58 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en" ng-app>
 <head>
-  <meta charset="utf-8">
-  <!--<link rel="stylesheet" href="sp://import/css/eve.css">-->
-  <link rel="stylesheet" href="sp://import/css/adam.css">
-  <link rel="stylesheet" href="sp://import/css/api.css">
-  <link rel="stylesheet" href="sp://import/css/shared.css">
+	<meta charset="utf-8" />
+	<title>PartyQ</title>
   <link rel="stylesheet" href="css/master.css">
-  <script type="text/javascript" src="js/sha1.js"></script>
-  <script type="text/javascript" src="js/oauth.js"></script>
-  <script type="text/javascript" src="js/twitter.js"></script>
-  <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
-  <script type="text/javascript" src="js/handlebars.js"></script>
-  <script type="text/javascript" src="js/script.js"></script>
+	<script src="js/angular.js"></script>
+  <script src="js/jquery-1.9.1.js"></script>
+  <script src="js/oauth.js"></script>
+  <script src="js/sha1.js"></script>
+	<script src="js/partyq.js"></script>
 </head>
-<body>
-	<div class=wrapper>
-	  <div class=header>
-		  <img class=image src="img/partyhat.png" height="120px" width="120px"/>
-		  <div class="headerText">PartyQueue</div>
-		  <div class="inputfield"><input name="hashtag" value="#ssh" id="tag"><input type="submit" id="save" value="Spara"></div>
-		</div>
-	  <table class="list" id="list">
-	    <thead>
-	      <tr>
-	        <th class=title>Track</th>
-	        <th class=artists>Artist</th>
-	        <th class=requests>Requests</th>
-	        <th class=requesters>Requested by</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <script id="track-row-template" type="text/x-handlebars-template">
-        <tr id="{{id}}" data-uri="{{track.uri}}">
-          <td class="title">{{track.name}}</td>
-          <td class="artists">{{#each track.artists}}
-	            <a class="uri artist" href="{{uri}}">{{name}}</span>
-	          {{/each}}</td>
-	          <td class="requests">{{requests}}</td>
-	          <td class="requesters">{{#each requesters}}
-	            <span class="requester">{{user}}</span>
-	          {{/each}}</td>
-	        </tr>
-	      </script>
-	      <tr class="empty">
-	        <td colspan="4">No requests have arrived yet, stay tuned!</td>
-	      </tr>
-	    </tbody>
-	  </table>
+<body ng-controller="ListCtrl">
+	<div id="wrapper">
+		<section class="header cf">
+      <div class="logo">
+        <img src="img/icon.png" alt="">
+        <h1>PartyQ</h1>
+      </div>
+      <form id="options" class="options cf" ng-submit="updateFilter()">
+        <input type="text" id="filter" class="input" ng-model="filter" placeholder="Twitter filter" />
+        <input type="checkbox" class="switch-input" id="enabled" ng-model="enabled" />
+        <label for="enabled" class="switch"></label>
+        <div class="loading-throbber"></div>
+      </form>
+		</section>
+
+    <section class="track-list cf">
+      <table class="list" id="list">
+        <thead>
+          <tr>
+            <th class="title">Track</th>
+            <th class="artists">Artist</th>
+            <th class="requesters">Requested by</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="r in requests">
+            <td class="title" data-uri="{{r.track.uri}}">{{r.track.name}}</td>
+            <td class="artists" ng-repeat="a in r.track.artists">
+              <a class="uri artist" href="{{a.uri}}">{{a.name}}</span>
+            </td>
+            <td class="requesters">
+              <span class="names" ng-repeat="p in r.requesters">
+                <span class="requester">{{p.user}}</span>
+              </span>
+              <span class="sum">({{r.requesters.length}} total)</span>
+            </td>
+          </tr>
+          <tr class="empty" ng-hide="requests.length">
+            <td colspan="4">No requests queued yet, stay tuned!</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 	</div>
 </body>
 </html>
